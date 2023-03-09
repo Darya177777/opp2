@@ -27,9 +27,9 @@ void matrix_fill(double * matrix){
 double parallel_result_calculation(double* matrix, double* vectorX, double* vectorB, double* result) {
     int i, j; // Loop variables
     double norma = 0.0, dop = 0.0;
-#pragma omp parallel shared(matrix, vectorB) private(i, j)
+#pragma omp parallel shared(matrix, vectorX, vectorB, result) private(i, j)
     {
-        #pragma omp for
+        #pragma omp for reduction(+:norma) reduction(+:dop)
         for (i = 0; i < VECTOR_SIZE; i++) {
             result[i] = -1 * vectorB[i];
             for (j = 0; j < VECTOR_SIZE; j++)
